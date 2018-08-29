@@ -1,0 +1,66 @@
+#!/usr/bin/env perl
+
+package ApacheConf::Directives::ServerName;
+use warnings;
+use strict;
+use FindBin qw( $Bin );
+use lib "$Bin/lib/perl5";
+use lib "$Bin/lib";
+use ApacheConf::Directives::Common;
+use Data::Dumper;
+use Sys::Hostname;
+
+sub main {
+    my $class=shift;
+    my $self=$class->new();
+}
+
+sub server_name {
+    my $self=shift;
+    my $args={@_};
+    my $map=$args->{'map'};
+
+    my $parser=$self->Parser('Apache');
+
+    my $valid=$parser->find_valid_directives(directive=>'ServerName', map=>$map)
+        or return;
+
+    if (@{$valid}) {
+        if (defined $map and grep $_ eq 'VirtualHost', @{$map}) {
+            return $valid->[-1]->{'value'};
+        } else {
+            my @root_server_names=();
+            for my $meta (@{$valid}) {
+                my ($map, $value)=@{$meta}{qw(map value)};
+                next if grep $_ eq 'VirtualHost', @{$map};
+                push @root_server_names, $value;
+            }
+
+            return $root_server_names[-1];
+        }
+    }
+}
+
+sub root_server_name {
+    my $self=shift;
+
+    my $valid=$parser->find_valid_directives(directive=>'ServerName')
+        or return;
+
+    if (@{$valid}) {
+        my @root_server_names=();
+        for my $meta (@{$valid}) {
+            my ($map, $value)=@{$meta}{qw(map value)};
+            next if grep $_ eq 'VirtualHost', @{$map};
+            push @root_server_names, $value;
+        }
+
+        if (@root_server_names) {
+            return $root_server_names[-1];
+        }
+    }
+
+    return hostname;
+}
+
+1;

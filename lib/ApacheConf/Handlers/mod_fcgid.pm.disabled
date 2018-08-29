@@ -1,0 +1,26 @@
+#!/usr/bin/env perl
+
+package ApacheConf::Handlers::mod_fcgid;
+use warnings;
+use strict;
+use FindBin qw( $Bin );
+use lib "$Bin/lib/perl5";
+use lib "$Bin/lib";
+use ApacheConf::Common::Shell;
+use ApacheConf::Parser::Apache;
+use Data::Dumper;
+use Config::IniFiles;
+
+sub main {
+    my $class=shift;
+    my $self=$class->new();
+}
+
+sub load_apache_conf {
+    my $self=shift;
+    my $parser=$self->Parser('Apache');
+
+    return $parser->load_conf_cached;
+}
+
+1;

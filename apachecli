@@ -1,0 +1,53 @@
+#!/usr/bin/env perl
+
+use warnings;
+use strict;
+use FindBin qw($Bin);
+use lib "$Bin/lib/perl5";
+use lib "$Bin/lib";
+use ApacheConf;
+use Data::Dumper;
+
+#my $cli=ApacheConf::CLI->main();
+
+my $core=ApacheConf->new();
+my $parser={};
+$parser->{'suphp'}=$core->Parser('SuPHP');
+$parser->{'apache'}=$core->Parser('Apache');
+print $parser->{'apache'}->url2path("http://tremisphere.com/boi?okay") . "\n";
+
+my $sn=$core->Directives('ServerName');
+print $sn->root_server_name . "\n";
+
+my $dr=$core->Directives('DocumentRoot');
+print $dr->root_document_root . "\n";
+
+##OLD##
+
+#my $directory=ApacheConf::Directives::Directory->new();
+#print Dumper $directory->get_sections_by_url("http://tremisphere.com");
+
+#print Dumper $parser->{'apache'}->params();
+
+#my $handlers={};
+#$handlers->{'mod_suphp'}=ApacheConf::Handlers::mod_suphp->new();
+#print Dumper $handlers->{'mod_suphp'}->handlers();
+#print Dumper $parser->{'apache'}->load_conf_cached();
+
+#print Dumper $parser->{'apache'}->find_valid_directives('suPHP_AddHandler');
+
+#print Dumper $parser->{'apache'}->loaded_modules;
+#my $server_root=ApacheConf::Directives::ServerRoot->new();
+#print Dumper $server_root->server_root();
+
+#my $httpd_conf=$parser->{'apache'}->load_conf_cached();
+#print Dumper $parser->{'apache'}->key2values(data=>$httpd_conf, key=>'ServerRoot');
+
+#print Dumper $parser->{'apache'}->available_sections();
+
+#print ApacheConf::Directives::IfVersion->main(params=>'!= /^2.3.[01234]/') . "\n";
+#print ApacheConf::Directives::IfDefine->main(params=>'!SSL') . "\n";
+#print ApacheConf::Directives::Directory->main(params=>"'/boi'") . "\n";
+#print ApacheConf::Directives::IfFile->main(params=>'/home/tremisph/public_html/index.html') . "\n";
+
+#my $apache=ApacheConf->new('http://tremisphere.com');

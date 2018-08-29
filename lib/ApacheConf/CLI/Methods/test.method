@@ -1,0 +1,24 @@
+sub _test {
+    return {
+        args => {
+            arg_test => {
+                required    => 0,
+                type        => 'ip',
+                description => "An ipv4 address.",
+            },
+        },
+        description => 'A test method.',
+    }
+}
+
+sub test {
+    my $self=shift;
+    my $args=shift;
+
+    my $return={};
+    $return->{'method'}='test';
+    $return->{'format'}='string';
+    $return->{'data'}="This is a test.";
+
+    return $return;
+}

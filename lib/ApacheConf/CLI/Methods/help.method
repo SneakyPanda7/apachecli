@@ -1,0 +1,34 @@
+sub _help {
+    return {
+        args => {
+            method => {
+                required    => 0,
+                description => "Display information about a specific method.",
+                type        => "method",
+            },
+        },
+        description => "Displays this help page.",
+    }
+}
+
+sub help {
+    my $self=shift;
+    my $args=shift;
+
+    my $meta=$self->meta;
+    my $method=$args->{'method'};
+    my $page;
+
+    if ($method) {
+        $page=$self->help($method);
+    } else {
+        $page=$self->help->{'frontpage'};
+    }
+
+    my $return;
+    $return->{'method'}=$method;
+    $return->{'format'}='string';
+    $return->{'data'}=$page;
+
+    return $return;
+}
